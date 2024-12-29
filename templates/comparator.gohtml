@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditional Template</title>
+</head>
+<body>
+    {{if ge .FinalValue 80}}
+        <p>Good</p>
+    {{else if ge .FinalValue 60}}
+        <p>Nice Try</p>
+    {{else}}
+        <p>Try Again!</p>
+    {{end}}
+</body>
+</html>
