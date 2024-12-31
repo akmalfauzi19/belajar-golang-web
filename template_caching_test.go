@@ -3,30 +3,28 @@ package belajar_golang_web
 import (
 	"embed"
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"text/template"
 )
 
 //go:embed templates/*.gohtml
-var templates1 embed.FS
+var tmplFS embed.FS
 
-var myTemplates = template.Must(template.ParseFS(templates1, "templates/*.gohtml"))
+var myTemplates = template.Must(template.ParseFS(tmplFS, "templates/*.gohtml"))
 
-// variable must place outside the function for caching the template
-
-func templateCaching(w http.ResponseWriter, r *http.Request) {
-	myTemplates.ExecuteTemplate(w, "simple.gohtml", "Hello Template Caching")
+func TemplateCaching(writer http.ResponseWriter, request *http.Request) {
+	myTemplates.ExecuteTemplate(writer, "simple.gohtml", "Hello Template Caching")
 }
 
 func TestTemplateCaching(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "http://localhost:8080", nil)
-	res := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodGet, "http://localhost:8080", nil)
+	recorder := httptest.NewRecorder()
 
-	templateCaching(res, req)
+	TemplateCaching(recorder, request)
 
-	body, _ := io.ReadAll(res.Result().Body)
+	body, _ := io.ReadAll(recorder.Result().Body)
 	fmt.Println(string(body))
 }
